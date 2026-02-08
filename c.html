@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chocolate Day 🍫</title>
+
+<style>
+body{
+  margin:0;
+  padding:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#fff1e6,#ffe0ec);
+  font-family: Arial, Helvetica, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  overflow:hidden;
+}
+
+.container{
+  width:95%;
+  max-width:500px;
+  padding:20px;
+  animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(0.95);}
+  to{opacity:1; transform:scale(1);}
+}
+
+h1{
+  color:#6d2c2c;
+  font-size:1.9rem;
+}
+
+p{
+  color:#444;
+  font-size:1rem;
+  line-height:1.6;
+  margin:12px 0;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  font-size:1rem;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:#8b3a3a;
+  color:white;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover{
+  transform:scale(1.03);
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);
+}
+
+button.special{
+  background:#d32f2f;
+  font-weight:bold;
+}
+
+.gif{
+  width:230px;
+  max-width:90%;
+  margin:15px auto;
+  display:block;
+  border-radius:12px;
+}
+
+.hidden{display:none;}
+
+/* Typing effect */
+.typing{
+  border-right:3px solid #d32f2f;
+  white-space:nowrap;
+  overflow:hidden;
+  display:inline-block;
+}
+
+/* Floating hearts */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  animation:float 6s linear forwards;
+  pointer-events:none;
+}
+@keyframes float{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-120vh);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- STEP 1 -->
+<div id="step1">
+  <h1>🍫 Chocolate Day 🍫</h1>
+  <img src="c1.gif" class="gif">
+  <p>Some chocolates are sweet…<br>some are special 😌</p>
+
+  <button onclick="choose('dairy')">Dairy Milk 🍫</button>
+  <button class="special" onclick="choose('kitkat')">KitKat ❤️</button>
+  <button onclick="choose('silk')">Silk 💕</button>
+</div>
+
+<!-- STEP 2 -->
+<div id="step2" class="hidden">
+  <img src="c3.jpg" class="gif">
+  <p id="typingText" class="typing"></p>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="hidden">
+  <img src="c.gif" class="gif">
+  <p id="finalMsg"></p>
+</div>
+
+</div>
+
+<script>
+function hearts(count){
+  for(let i=0;i<count;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.textContent="💖";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=(14+Math.random()*12)+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  }
+}
+
+function choose(type){
+  document.getElementById("step1").classList.add("hidden");
+  document.getElementById("step2").classList.remove("hidden");
+
+  let text="";
+  if(type==="kitkat"){
+    text="Some people love chocolates…\nBut with you, KitKat feels different ❤️";
+    hearts(14);
+  }else{
+    text="Sweet choice 😋\nBut chocolates are sweeter when shared with you💕";
+    hearts(8);
+  }
+
+  typeText(text, type);
+}
+
+function typeText(text, type){
+  const el=document.getElementById("typingText");
+  el.textContent="";
+  let i=0;
+
+  const interval=setInterval(()=>{
+    el.textContent+=text[i];
+    i++;
+    if(i>=text.length){
+      clearInterval(interval);
+      setTimeout(()=>showFinal(type),800);
+    }
+  },45);
+}
+
+function showFinal(type){
+  document.getElementById("step2").classList.add("hidden");
+  document.getElementById("final").classList.remove("hidden");
+
+  const msg=document.getElementById("finalMsg");
+
+  if(type==="kitkat"){
+    msg.innerHTML=
+      "They say <b>‘Have a break’</b>…<br>" +
+      "But with you,<br>" +
+      "<b>I don’t want a break at all.</b><br><br>" +
+      "Happy Chocolate Day!❤️🍫";
+    hearts(20);
+  }else{
+    msg.innerHTML=
+      "Chocolate melts…<br>" +
+      "But the feeling I have for you stays forever ❤️<br><br>" +
+      "Happy Chocolate Day! 🍫";
+    hearts(12);
+  }
+}
+</script>
+
+</body>
+</html>
