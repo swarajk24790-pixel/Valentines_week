@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teddy Day 🧸</title>
+
+<style>
+/* -------- Calm + Cute Theme -------- */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #fff0f5, #ffe6ee);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Floating hearts (soft) */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 14px;
+  animation: floatUp 9s linear infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0.6; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+.container {
+  width: 95%;
+  max-width: 500px;
+  padding: 20px;
+  z-index: 2;
+}
+
+/* Fade animation */
+.fade {
+  animation: fadeIn 1.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  color: #d6336c;
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.gif {
+  width: 220px;
+  max-width: 90%;
+  border-radius: 14px;
+  margin: 15px auto;
+  display: block;
+}
+
+/* Button */
+button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background: #d6336c;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+/* Typing message */
+.message {
+  color: #d6336c;
+  font-weight: bold;
+  min-height: 1.6em;
+  margin-top: 14px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 400px) {
+  h1 { font-size: 1.5rem; }
+  p { font-size: 0.95rem; }
+}
+h2 {
+  font-size: 1.4rem;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- STEP 1: Intro -->
+  <div id="step1" class="fade">
+    <h1>🧸 Teddy Day</h1>
+    <img src="teddy1.gif" class="gif" alt="Teddy Intro">
+    <p>This teddy is not normal…</p>
+    <button onclick="goStep2()">What do you mean? 🤍</button>
+  </div>
+
+  <!-- STEP 2: Secrets -->
+  <div id="step2" style="display:none;">
+    <img src="teddy2.gif" class="gif fade" alt="Teddy">
+    <p class="message" id="secretText"></p>
+    <button id="whyBtn" style="display:none;" onclick="goStep3()">Why this teddy?</button>
+  </div>
+
+  <!-- STEP 3: Emotional Core -->
+  <div id="step3" style="display:none;">
+    <img src="teddy3.gif" class="gif fade" alt="Teddy Love">
+    <p class="message" id="finalText"></p>
+    <p class="fade" style="margin-top:18px;">Happy Teddy Day 🧸🤍</p>
+    <button onclick="goHome()">Back to Home 🏠</button>
+  </div>
+  <div id="cuteSection" style="display:none;" class="fade">
+    <img src="teddy4.gif" class="gif" alt="Cute Teddy">
+    <h2 style="color:#d6336c; margin-top:10px;">
+      You are my cute teddy 🧸💖
+    </h2>
+  </div>
+  
+</div>
+
+<script>
+/* Floating hearts */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💗";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.animationDuration = (7 + Math.random()*4) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 10000);
+}
+setInterval(createHeart, 1000);
+
+/* Step control */
+function goStep2() {
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "block";
+  typeSecrets();
+}
+
+function goStep3() {
+  document.getElementById("step2").style.display = "none";
+  document.getElementById("step3").style.display = "block";
+  typeFinal();
+}
+
+/* Typing: Secrets */
+const secrets = [
+  "It knows when you smile for no reason.",
+  "It knows when you pretend you’re okay.",
+  "It knows when you miss me… but don’t say it."
+];
+let secretIndex = 0;
+
+function typeSecrets() {
+  const el = document.getElementById("secretText");
+  el.innerText = "";
+  let i = 0;
+  const text = secrets[secretIndex];
+
+  const typing = setInterval(() => {
+    el.innerHTML += text[i] === " " ? "&nbsp;" : text[i];
+
+    i++;
+    if (i === text.length) {
+      clearInterval(typing);
+      secretIndex++;
+      if (secretIndex < secrets.length) {
+        setTimeout(typeSecrets, 700);
+      } else {
+        document.getElementById("whyBtn").style.display = "inline-block";
+      }
+    }
+  }, 45);
+}
+
+/* Typing: Final message */
+const finalLines = [
+  "Because when I can’t be there…",
+  "I wanted something to stay.",
+  "Not to replace me.",
+  "Just to remind you…",
+  "you’re never alone."
+];
+let finalIndex = 0;
+
+function typeFinal() {
+  const el = document.getElementById("finalText");
+  el.innerText = "";
+  let i = 0;
+  const text = finalLines[finalIndex];
+
+  const typing = setInterval(() => {
+    el.innerHTML += text[i] === " " ? "&nbsp;" : text[i];
+    i++;
+    if (i === text.length) {
+      clearInterval(typing);
+      finalIndex++;
+      if (finalIndex < finalLines.length) {
+        setTimeout(typeFinal, 800);
+      }
+    }
+  }, 45);
+}
+
+/* Back to home */
+function goHome() {
+  window.location.href = "index.html";
+}
+function typeFinal() {
+  const el = document.getElementById("finalText");
+  el.innerText = "";
+  let i = 0;
+  const text = finalLines[finalIndex];
+
+  const typing = setInterval(() => {
+    el.innerHTML += text[i] === " " ? "&nbsp;" : text[i];
+    i++;
+
+    if (i === text.length) {
+      clearInterval(typing);
+      finalIndex++;
+
+      if (finalIndex < finalLines.length) {
+        setTimeout(typeFinal, 800);
+      } else {
+        // 👇 SHOW CUTE SECTION AFTER EVERYTHING
+        setTimeout(() => {
+          document.getElementById("cuteSection").style.display = "block";
+        }, 900);
+      }
+    }
+  }, 45);
+}
+
+</script>
+
+</body>
+</html>
